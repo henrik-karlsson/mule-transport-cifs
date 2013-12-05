@@ -50,7 +50,7 @@ public class SmbMuleMessageFactory extends AbstractMuleMessageFactory
     {
         SmbFile file = (SmbFile) transportMessage;
 
-        muleMessage.setOutboundProperty(FileConnector.PROPERTY_ORIGINAL_FILENAME, file.getName());
-        muleMessage.setOutboundProperty(FileConnector.PROPERTY_FILE_SIZE, file.length());
+        muleMessage.setInboundProperty(FileConnector.PROPERTY_ORIGINAL_FILENAME, file.getName());
+        muleMessage.setInboundProperty(FileConnector.PROPERTY_FILE_SIZE, file.length());
     }
 }

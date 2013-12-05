@@ -4,14 +4,15 @@
     <groupId>org.mule.transports</groupId>
     <artifactId>mule-transport-cifs</artifactId>
     <packaging>jar</packaging>
-    <version>3.3.1-SNAPSHOT</version>
+    <version>3.3.0-gb-patch-SNAPSHOT</version>
     <name>Mule CIFS transport</name>
     <url>http://www.mulesoft.org/extensions/cifs-transport</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <mule.version>3.3.0</mule.version>
+        <maven-source.version>2.2.1</maven-source.version>
+        <mule.version>3.4.0</mule.version>
     </properties>
 
     <licenses>
@@ -28,19 +29,18 @@
     </scm>
 
     <distributionManagement>
-        <repository>
-            <id>mulesoft.releases</id>
-            <name>Muleforge Releases Repository</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-        </repository>
         <snapshotRepository>
-            <id>mulesoft.snapshots</id>
-            <name>Muleforge Snapshots Repository</name>
-            <url>https://repository.mulesoft.org/snapshots/</url>
-            <uniqueVersion>false</uniqueVersion>
+            <id>greenbird</id>
+            <name>Greenbird internal snapshots</name>
+            <url>https://nexus.greenbird.com/content/repositories/snapshots/</url>
         </snapshotRepository>
+        <repository>
+            <id>greenbird</id>
+            <name>Greenbird releases</name>
+            <url>https://nexus.greenbird.com/content/repositories/releases/</url>
+        </repository>
     </distributionManagement>
-
+    
     <build>
         <plugins>
             <plugin>
@@ -52,6 +52,21 @@
                     <target>1.6</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source.version}</version>
+                <inherited>true</inherited>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

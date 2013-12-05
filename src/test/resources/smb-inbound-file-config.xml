@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:file="http://www.mulesoft.org/schema/mule/file"
+      xmlns:smb="http://www.mulesoft.org/schema/mule/smb"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.3/mule.xsd
+        http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/3.3/mule-file.xsd
+        http://www.mulesoft.org/schema/mule/smb http://www.mulesoft.org/schema/mule/smb/3.3/mule-smb.xsd
+        ">
+
+    <file:connector name="defaultFileConnector" streaming="false" pollingFrequency="5000"/>
+    <smb:connector name="defaultSmbConnector" pollingFrequency="5000"/>
+    
+    <configuration defaultExceptionStrategy-ref="globalExceptionHandlingStrategy"/>
+
+    <custom-exception-strategy name="globalExceptionHandlingStrategy" class="org.mule.transport.cifs.NonConsumingRollbackExceptionStrategy">
+        <choice>
+            <when expression="#[message.inboundProperties.?originalFilename != null]">
+                <logger level="ERROR" category="dikt.globalExceptionHandlingStrategy" 
+                        message="Error moving #[message.inboundProperties.?originalFilename]: #[exception.message]"/>
+            </when>
+            <otherwise>
+                <logger level="ERROR" category="dikt.globalExceptionHandlingStrategy" 
+                        message="Unexpected error: #[exception.message]"/>
+            </otherwise>
+        </choice>
+    </custom-exception-strategy>
+    
+    <!--
+    <rollback-exception-strategy name="globalExceptionHandlingStrategy" maxRedeliveryAttempts="2">
+        <choice>
+            <when expression="#[message.inboundProperties.?originalFilename != null]">
+                <logger level="WARN" category="dikt.globalExceptionHandlingStrategy" 
+                        message="Error moving #[header:originalFilename]: #[exception.message]"/>
+            </when>
+            <otherwise>
+                <logger level="WARN" category="dikt.globalExceptionHandlingStrategy" 
+                        message="Error moving #[header:originalFilename]: #[exception.message]"/>
+            </otherwise>
+        </choice>
+        <on-redelivery-attempts-exceeded>
+            <choice>
+                <when expression="#[message.inboundProperties.?originalFilename != null]">
+                    <logger level="ERROR" category="dikt.globalExceptionHandlingStrategy" 
+                            message="Error moving #[header:originalFilename]: #[exception.message]"/>
+                </when>
+                <otherwise>
+                    <logger level="ERROR" category="dikt.globalExceptionHandlingStrategy" 
+                            message="Unexpected error: #[exception.message]"/>
+                </otherwise>
+            </choice>
+        </on-redelivery-attempts-exceeded>
+    </rollback-exception-strategy>
+    
+    -->
+    
+
+    
+    <flow name="fileInbound" processingStrategy="synchronous">
+        <file:inbound-endpoint path="/Users/chr/Greenbird/git/github/forks/mule-transport-cifs/in"/>
+        <custom-processor class="org.mule.transport.cifs.ExceptionThrower"/>
+    </flow>
+
+    <flow name="smbInbound">
+        <smb:inbound-endpoint path="Volume_1/Chrtest/in/" host="192.168.0.181" user="chr" password="digskyld"/>
+        <choice>
+            <when expression="#[message.inboundProperties.?originalFilename == 'fail.txt']">
+                <custom-processor class="org.mule.transport.cifs.ExceptionThrower"/>
+            </when>
+            <otherwise>
+                <logger message="" level="DEBUG"/>
+                </otherwise>
+        </choice>
+        <smb:outbound-endpoint outputPattern="#[message.inboundProperties.?originalFilename]" path="Volume_1/Chrtest/out/" host="192.168.0.181" user="chr" password="digskyld"/>
+        <logger category="test" level="INFO" message="Moved #[message.inboundProperties.?originalFilename]."/>
+    </flow>
+</mule>
