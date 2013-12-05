@@ -40,7 +40,7 @@
             <url>https://nexus.greenbird.com/content/repositories/releases/</url>
         </repository>
     </distributionManagement>
-    
+
     <build>
         <plugins>
             <plugin>
@@ -67,6 +67,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.4.1</version>
+                <configuration>
+                    <pushChanges>false</pushChanges>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -111,7 +119,7 @@
     </dependencies>
 
     <repositories>
-            <repository>
+        <repository>
             <id>mule-deps</id>
             <name>Mule Dependencies</name>
             <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
