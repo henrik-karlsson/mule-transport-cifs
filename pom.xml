@@ -3,7 +3,7 @@
     <groupId>org.mule.transports</groupId>
     <artifactId>mule-transport-cifs</artifactId>
     <packaging>jar</packaging>
-    <version>3.4.0-gb-patch-2-SNAPSHOT</version>
+    <version>3.4.0-pulsen-SNAPSHOT</version>
     <name>Mule CIFS transport</name>
     <url>http://www.mulesoft.org/extensions/cifs-transport</url>
 
@@ -25,21 +25,21 @@
         <connection>scm:git:git@github.com:dirk-olmes/mule-transport-cifs.git</connection>
         <developerConnection>scm:git:git@github.com:dirk-olmes/mule-transport-cifs.git</developerConnection>
         <url>https://github.com/dirk-olmes/mule-transport-cifs</url>
-      <tag>HEAD</tag>
-  </scm>
+    	<tag>HEAD</tag>
+    </scm>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>greenbird</id>
-            <name>Greenbird internal snapshots</name>
-            <url>https://nexus.greenbird.com/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>greenbird</id>
-            <name>Greenbird releases</name>
-            <url>https://nexus.greenbird.com/content/repositories/releases/</url>
-        </repository>
-    </distributionManagement>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>maven.gbg.pi.pulsen</id>
+			<name>maven.gbg.pi.pulsen-snapshots</name>
+			<url>http://maven.gbg.pi.pulsen/libs-snapshots-local</url>
+		</snapshotRepository>
+		<repository>
+			<id>maven.gbg.pi.pulsen</id>
+			<name>maven.gbg.pi.pulsen-releases</name>
+			<url>http://maven.gbg.pi.pulsen/libs-releases-local</url>
+		</repository>
+	</distributionManagement>
 
     <build>
         <plugins>
@@ -81,9 +81,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.samba.jcifs</groupId>
+            <groupId>jcifs</groupId>
             <artifactId>jcifs</artifactId>
-            <version>1.3.10</version>
+            <version>1.3.17</version>
         </dependency>
         <dependency>
             <groupId>org.mule.transports</groupId>
@@ -117,18 +117,4 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>mule-deps</id>
-            <name>Mule Dependencies</name>
-            <url>http://dist.codehaus.org/mule/dependencies/maven2</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 </project>
