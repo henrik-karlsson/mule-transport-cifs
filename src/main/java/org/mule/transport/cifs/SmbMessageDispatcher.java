@@ -13,6 +13,7 @@ package org.mule.transport.cifs;
 import org.mule.api.MuleEvent;
 import org.mule.api.MuleMessage;
 import org.mule.api.endpoint.OutboundEndpoint;
+import org.mule.api.transport.OutputHandler;
 import org.mule.transport.AbstractMessageDispatcher;
 
 import java.io.InputStream;
@@ -44,6 +45,10 @@ public class SmbMessageDispatcher extends AbstractMessageDispatcher
                 IOUtils.copy(is, out);
                 is.close();
             }
+            else if (data instanceof OutputHandler)
+            {
+                ((OutputHandler) data).write(event, out);
+            }            
             else
             {
                 byte[] dataBytes;
