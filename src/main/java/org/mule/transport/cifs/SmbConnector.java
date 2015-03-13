@@ -136,6 +136,7 @@ public class SmbConnector extends AbstractConnector
         OutputStream stream = null;
 
         SmbFile smbFile;
+        SmbFile smbParent;
         try
         {
             String filename = getFilename(endpoint, event);
@@ -145,16 +146,21 @@ public class SmbConnector extends AbstractConnector
             {
                 logger.warn("No user or password supplied. Attempting to connect with just smb://<host>/<path>");
                 logger.info("smb://" + uri.getHost() + uri.getPath() + "/" + filename);
-                smbFile = new SmbFile("smb://" + uri.getHost() + uri.getPath() + filename);
+                smbParent = new SmbFile("smb://" + uri.getHost() + uri.getPath());
             }
             else
             {
                 logger.info("smb://" + uri.getUser() + ":" + uri.getPassword() + "@" + uri.getHost()
                             + uri.getPath() + filename);
-                smbFile = new SmbFile("smb://" + uri.getUser() + ":" + uri.getPassword() + "@"
-                                      + uri.getHost() + uri.getPath() + filename);
+                smbParent = new SmbFile("smb://" + uri.getUser() + ":" + uri.getPassword() + "@"
+                        + uri.getHost() + uri.getPath());
             }
-
+            
+            if (!smbParent.exists()) 
+            {
+            	smbParent.mkdirs();
+            }
+            smbFile = new SmbFile(smbParent, filename);
             if (!smbFile.exists())
             {
                 smbFile.createNewFile();
