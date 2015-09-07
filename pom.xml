@@ -3,7 +3,7 @@
     <groupId>org.mule.transports</groupId>
     <artifactId>mule-transport-cifs</artifactId>
     <packaging>jar</packaging>
-    <version>3.5.0.1-pulsen-SNAPSHOT</version>
+    <version>3.5.0.2-pulsen-SNAPSHOT</version>
     <name>Mule CIFS transport</name>
     <url>http://www.mulesoft.org/extensions/cifs-transport</url>
 

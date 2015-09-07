@@ -67,7 +67,12 @@ public class SmbMessageRequester extends AbstractMessageRequester
                       + uri.getPath();
         }
 
-        SmbFile[] files = new SmbFile(smbPath).listFiles();
+        SmbFile path =  new SmbFile(smbPath);
+        if (!path.exists()) {
+            // Create directories if the don't exists
+        	path.mkdirs();
+        }
+        SmbFile[] files = path.listFiles();
         if (files == null || files.length == 0)
         {
             return null;
@@ -97,7 +102,6 @@ public class SmbMessageRequester extends AbstractMessageRequester
             return null;
         }
 
-        // TODO why not use the fileList above?
-        return createMuleMessage(file);
+        return createMuleMessage(fileList);
     }
 }
